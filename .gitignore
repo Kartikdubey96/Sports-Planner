@@ -1,0 +1,32 @@
+# --- Python & Environment ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+.flaskenv
+
+# --- Project Specifics (LangChain / CrewAI) ---
+# Ignore local environment variables & API keys
+.env*
+!.env.example
+
+# --- DevOps & Docker ---
+.docker/
+# Only ignore if you don't want to version your compose overrides
+# docker-compose.override.yml
+
+# --- IDEs & Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# --- Project Build & Distribution ---
+dist/
+build/
+*.egg-info/
