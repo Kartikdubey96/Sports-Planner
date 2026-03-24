@@ -10,7 +10,7 @@ search_tool = SerperDevTool(search_kwargs={"num": 3})
 cloud_llm = LLM(
     model="gemini/gemini-2.5-flash",  # <--- Updated to the active 2.5 model
     temperature=0.1,
-    api_key=os.environ.get("AIzaSyATLqdn-yQykP2RDj1-pwG2AcuVEPY2HDc")
+    api_key=os.environ.get("GEMINI_API_KEY")
 )
 
 # --- THE AGENTS ---
