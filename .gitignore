@@ -30,3 +30,14 @@ env/
 dist/
 build/
 *.egg-info/
+# --- Streamlit Secrets (CRITICAL) ---
+.streamlit/secrets.toml
+
+# --- CrewAI / Local DBs & Logs ---
+*.log
+*.sqlite3
+*.db
+# --- Kubernetes Secrets (CRITICAL) ---
+api-secrets.yaml
+*-secret.yaml
+*-secrets.yaml
