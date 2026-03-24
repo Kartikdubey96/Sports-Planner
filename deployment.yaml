@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sports-analyst-deployment
+  labels:
+    app: sports-analyst
+spec:
+  replicas: 2 # This runs 2 copies of your app for backup!
+  selector:
+    matchLabels:
+      app: sports-analyst
+  template:
+    metadata:
+      labels:
+        app: sports-analyst
+    spec:
+      containers:
+      - name: sports-analyst-container
+        # REPALCE THIS with your actual Docker image name
+        image: your-dockerhub-username/sports-analyst:latest 
+        ports:
+        - containerPort: 8501
+        envFrom:
+        - secretRef:
+            name: sports-app-secrets # Pulls the API keys from Step 1
