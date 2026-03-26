@@ -31,9 +31,12 @@ jobs:
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.EC2_HOST }}
-        username: ubuntu
+        username: ec2-user  # <--- UPDATED FROM ubuntu
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+          # Log in to Docker Hub on the EC2 (Optional but safer)
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
           # 1. Pull the fresh image from Docker Hub
           docker pull ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest
           
@@ -42,7 +45,6 @@ jobs:
           docker rm sports-container || true
           
           # 3. Run the new container
-          # We map port 8501 for Streamlit and inject your API Keys
           docker run -d \
             --name sports-container \
             -p 8501:8501 \
