@@ -20,4 +20,4 @@ COPY . .
 EXPOSE 8501
 
 # Run Streamlit in Headless mode so it doesn't freeze asking for an email!
-CMD ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
