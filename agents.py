@@ -4,13 +4,15 @@ from my_sports_tools import check_resource
 import os
 
 # 1. Initialize the Search Tool
-search_tool = SerperDevTool(search_kwargs={"num": 3})
+search_tool = SerperDevTool(search_kwargs={"num": 5})
 
 # 2. Define the Cloud Brain (Swapped to Gemini for Production!)
 cloud_llm = LLM(
     model="gemini/gemini-2.5-flash",  # <--- Updated to the active 2.5 model
     temperature=0.1,
-    api_key=os.environ.get("GEMINI_API_KEY")
+    api_key=os.environ.get("GEMINI_API_KEY"),
+    max_retries=10,
+    request_timeout=300
 )
 
 # --- THE AGENTS ---
@@ -30,7 +32,8 @@ planner_agent = Agent(
     tools=[search_tool],
     allow_delegation=False,
     verbose=True,
-    max_iter=5
+    max_rpm=2,
+    max_iter=2
 )
 
 analyst_agent = Agent(
@@ -44,7 +47,8 @@ analyst_agent = Agent(
     tools=[check_resource],
     allow_delegation=False,
     verbose=True,
-    max_iter=3
+    max_iter=1,
+    max_rpm=2
 )
 
 reporter_agent = Agent(
@@ -57,5 +61,6 @@ reporter_agent = Agent(
     are missing, you must explicitly state 'Data Unavailable'. Never write about a different sport.""",
     llm=cloud_llm, # <--- Updated
     allow_delegation=False,
-    verbose=True
+    verbose=True,
+    max_rpm=2
 )
