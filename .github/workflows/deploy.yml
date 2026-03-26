@@ -34,20 +34,20 @@ jobs:
         username: ec2-user  # <--- UPDATED FROM ubuntu
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          # Log in to Docker Hub on the EC2 (Optional but safer)
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          # 1. Login to Docker Hub on the EC2
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-          # 1. Pull the fresh image from Docker Hub
-          docker pull ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest
-          
-          # 2. Stop and remove the old container if it exists
-          docker stop sports-container || true
-          docker rm sports-container || true
-          
-          # 3. Run the new container
-          docker run -d \
-            --name sports-container \
-            -p 8501:8501 \
-            -e GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} \
-            -e SERPER_API_KEY=${{ secrets.SERPER_API_KEY }} \
-            ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest
+            # 2. Pull the fresh image from Docker Hub
+            docker pull ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest
+
+            # 3. Stop and remove the old container if it exists
+            docker stop sports-container || true
+            docker rm sports-container || true
+
+            # 4. Run the new container with your API keys
+            docker run -d \
+              --name sports-container \
+              -p 8501:8501 \
+              -e GEMINI_API_KEY="${{ secrets.GEMINI_API_KEY }}" \
+              -e SERPER_API_KEY="${{ secrets.SERPER_API_KEY }}" \
+              ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest
