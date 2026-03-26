@@ -20,11 +20,12 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker Image
-      # I renamed the image to 'sports-planner' to match your project
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/sports-planner .
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest .
 
     - name: Push Docker Image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/sports-planner
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest
 
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v1.0.0
@@ -33,17 +34,18 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          # Pull the fresh image
-          docker pull ${{ secrets.DOCKER_USERNAME }}/sports-planner
+          # 1. Pull the fresh image from Docker Hub
+          docker pull ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest
           
-          # Stop and remove the old container if it exists
+          # 2. Stop and remove the old container if it exists
           docker stop sports-container || true
           docker rm sports-container || true
           
-          # Run the new container
-          # CRITICAL: We pass your API Keys as Environment Variables here
+          # 3. Run the new container
+          # We map port 8501 for Streamlit and inject your API Keys
           docker run -d \
             --name sports-container \
+            -p 8501:8501 \
             -e GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} \
             -e SERPER_API_KEY=${{ secrets.SERPER_API_KEY }} \
-            ${{ secrets.DOCKER_USERNAME }}/sports-planner
+            ${{ secrets.DOCKER_USERNAME }}/sports-planner:latest
