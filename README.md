@@ -1,63 +1,34 @@
-# Sports-Planner
+# 🏏 Sports-Planner: AI Agentic Framework (Group G10D5)
 
-
-This repository contains a simple agent-driven sports analysis framework built using the `crewai` library. The system demonstrates how to build a multi-agent crew that can research live sports data, plan analysis steps, validate resource availability, and produce a final execution schedule.
-
-## 📁 Project Structure
-
-```
-agents.py             # Agent definitions and LLM configuration
-main.py               # Entry point - orchestrates the Crew and user interaction
-my_sports_tools.py    # Custom tools used by agents (e.g. resource checker)
-tasks.py              # Task definitions linking planner and analyst agents
-requirements.txt      # Python dependencies
-```
-
-## ⚙️ Prerequisites
-
-1. **Python 3.11+** installed and available in your PATH (tested on Windows).
-2. A local LLM endpoint (e.g. Ollama running `deepseek-r1:8b`).
-3. Environment variables:
-   - `OPENAI_API_KEY` (set to `NA` if bypassing OpenAI checks for Ollama)
-   - `SERPER_API_KEY` (required for web search via `SerperDevTool`)
-
-Example (PowerShell):
-
-```powershell
-$env:OPENAI_API_KEY = 'NA'
-$env:SERPER_API_KEY = 'your_serper_key'
-```
-
-Alternatively, you can hardcode these in `main.py` as shown in the example.
-
-## 📦 Installation
-
-Install required packages:
-
-```powershell
-python -m pip install -r requirements.txt
-```
-
-## 🚀 Usage
-
-1. Start your local LLM server (e.g. Ollama) so that `http://localhost:11434` is reachable.
-2. Run the main script:
-
-```powershell
-py -3.11 main.py
-```
-
-3. When prompted, enter a sports analysis goal (e.g., "India vs Australia live score").
-4. The crew of agents will execute the tasks sequentially and print a final report.
-
-The `planner_agent` will search for live match data and generate a plan. The `analyst_agent` will verify resource availability with `check_resource` and output a schedule.
-
-## 🛠 Customization
-
-- **Agents**: Modify `agents.py` to change roles, backstories, or add tools.
-- **Tasks**: Update `tasks.py` to adjust the work flow or add new tasks.
-- **Tools**: Add more functions decorated with `@tool` in `my_sports_tools.py` for additional capabilities.
-
+This repository contains a high-performance **Dockerized Multi-Agent Sports Analysis System**. [cite_start]Originally proposed as a Rust service[cite: 3], the project has been evolved into a sophisticated **Python-based Agentic Framework** using **CrewAI**, **Streamlit**, and **Google Gemini**. [cite_start]It is fully automated via **GitHub Actions** and hosted on **AWS EC2**[cite: 48].
 
 ---
 
+## 🚀 Live Cloud Deployment
+**Production URL:** [http://<YOUR-EC2-PUBLIC-IP>:8501](http://<YOUR-EC2-PUBLIC-IP>:8501)
+
+## 📁 Project Structure & Documentation
+* [cite_start][**📜 Final Project Report (PDF)**](./docs/Project%20Report%20DO_10.pdf) - Official Technical Documentation[cite: 13].
+* [**🐍 agents.py**](./agents.py) - Definitions for the **Researcher** and **Writer** agents.
+* [**🌐 app.py**](./app.py) - Streamlit Web Interface (Frontend).
+* [cite_start][**🐳 Dockerfile**](./Dockerfile) - Containerization instructions for consistent deployment[cite: 53].
+* [cite_start][**⚙️ deploy.yml**](./.github/workflows/deploy.yml) - CI/CD pipeline configuration[cite: 223].
+
+---
+
+## ⚙️ Prerequisites & Tech Stack
+[cite_start]To maintain the high-performance standards required for modern sports management[cite: 30], the following stack is used:
+1. [cite_start]**Python 3.11+**: Core backend language[cite: 43].
+2. **CrewAI & LangChain**: Multi-agent orchestration and LLM memory.
+3. **Google Gemini API**: Advanced reasoning and report generation.
+4. **Serper API**: Real-time web search for live scores and match data.
+5. [cite_start]**AWS EC2 (N. Virginia)**: Cloud infrastructure for global accessibility[cite: 48].
+
+---
+
+## 📦 Installation & Local Usage
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/Kartikdubey96/Sports-Planner.git](https://github.com/Kartikdubey96/Sports-Planner.git)
+   cd Sports-Planner
