@@ -46,8 +46,8 @@ html, body, [data-testid="stAppViewContainer"] {
 /* ── Grid background ── */
 [data-testid="stMain"] {
     background-image:
-        linear-gradient(rgba(245,185,50,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(245,185,50,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
     background-size: 44px 44px;
 }
 
@@ -344,7 +344,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("""
-<div style='font-size:0.75rem; color:#334155; text-align:center; line-height:1.8;'>
+<div style='font-size:0.75rem; color:#94a3b8; text-align:center; line-height:1.8;'>
 CrewAI · Gemini 2.5 Flash<br>ChromaDB · Streamlit<br>Docker · AWS EC2
 </div>
 """, unsafe_allow_html=True)
@@ -355,7 +355,7 @@ CrewAI · Gemini 2.5 Flash<br>ChromaDB · Streamlit<br>Docker · AWS EC2
 st.markdown("""
 <div style='padding: 0.5rem 0 1.5rem;'>
     <h1>SportsCraft AI</h1>
-    <p style='color:#475569; font-size:0.95rem; margin:0; font-weight:300;'>
+    <p style='color:#94a3b8; font-size:0.95rem; margin:0; font-weight:300;'>
         Intelligent Sports Analysis &amp; Content Generation &nbsp;·&nbsp; Powered by Gemini 2.5 Flash
     </p>
 </div>
@@ -628,7 +628,7 @@ with tab_vault:
 # ── Footer ──
 st.markdown("""
 <div style='text-align:center; padding:2rem 0 1rem; border-top:1px solid #1e2530; margin-top:2rem;'>
-    <p style='color:#1e2530; font-size:0.8rem; font-family:"Bebas Neue",sans-serif; letter-spacing:2px;'>
+    <p style='color:#475569; font-size:0.8rem; font-family:"Bebas Neue",sans-serif; letter-spacing:2px;'>
         SPORTSCRAFT AI · GAI-10 · GROUP 10D5 · MEDICAPS UNIVERSITY · DATAGAMI 2026
     </p>
 </div>
