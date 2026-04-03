@@ -4,413 +4,632 @@ import sys
 import re
 from datetime import datetime
 
-# 1. Path Setup
 sys.path.append(os.path.dirname(__file__))
 
-# 2. Modern UI Config
+# ── Page Config ──
 st.set_page_config(
-    page_title="DeepSeek Sports Analyst", 
-    page_icon="🏏", 
+    page_title="SportsCraft AI",
+    page_icon="🏟️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# --- MODERN NEUBRUNCHISM + GLASS UI (2024 EDITION) ---
+# ─────────────────────────────────────────────
+#  PREMIUM DARK SPORTS UI
+#  Aesthetic: Editorial Sports Magazine
+#  Font: Bebas Neue (display) + DM Sans (body)
+#  Palette: Near-black bg, amber accent, red alert
+# ─────────────────────────────────────────────
 st.markdown("""
-    <style>
-    /* Import Modern Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap');
-    
-    /* Global Reset & Base */
-    * {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    }
-    
-    /* Animated Gradient Background */
-    [data-testid="stAppViewMain"] {
-        background: linear-gradient(-45deg, #0a0c10, #111827, #0f172a, #1e1b4b);
-        background-size: 400% 400%;
-        animation: gradientShift 15s ease infinite;
-    }
-    
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    
-    /* Modern Glass Cards with Border Animation */
-    [data-testid="stVerticalBlock"] > div:has(div.stMarkdown) {
-        background: rgba(17, 25, 40, 0.75) !important;
-        backdrop-filter: blur(16px) saturate(180%) !important;
-        -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-        border-radius: 28px !important;
-        border: 1px solid rgba(255, 255, 255, 0.125) !important;
-        padding: 2rem !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
-        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-    }
-    
-    [data-testid="stVerticalBlock"] > div:has(div.stMarkdown):hover {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
-    }
-    
-    /* Sleek Sidebar */
-    [data-testid="stSidebar"] {
-        background: rgba(10, 14, 23, 0.85) !important;
-        backdrop-filter: blur(20px) !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3) !important;
-    }
-    
-    [data-testid="stSidebar"] * {
-        color: #e2e8f0 !important;
-    }
-    
-    /* Modern Input Fields */
-    div[data-baseweb="input"] {
-        border-radius: 16px !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        transition: all 0.2s ease !important;
-    }
-    
-    div[data-baseweb="input"]:focus-within {
-        border-color: #3b82f6 !important;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
-    }
-    
-    .stTextInput input {
-        background: transparent !important;
-        color: #f1f5f9 !important;
-        font-size: 1rem !important;
-        padding: 0.75rem 1rem !important;
-    }
-    
-    /* Gradient Button */
-    button[kind="primary"], .stButton > button {
-        background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
-        border: none !important;
-        color: white !important;
-        border-radius: 40px !important;
-        padding: 0.75rem 2rem !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-        letter-spacing: 0.3px !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4) !important;
-        background: linear-gradient(135deg, #2563eb, #7c3aed) !important;
-    }
-    
-    .stButton > button:active {
-        transform: translateY(0);
-    }
-    
-    /* Status Widget */
-    [data-testid="stStatusWidget"] {
-        background: rgba(0, 0, 0, 0.5) !important;
-        backdrop-filter: blur(12px) !important;
-        border-radius: 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    /* Typography */
-    h1 {
-        font-size: 3.5rem !important;
-        font-weight: 800 !important;
-        background: linear-gradient(135deg, #f0f9ff, #e2e8f0);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 0.5rem !important;
-        letter-spacing: -0.02em !important;
-    }
-    
-    h2, h3 {
-        font-weight: 700 !important;
-        letter-spacing: -0.01em !important;
-        background: linear-gradient(135deg, #f1f5f9, #cbd5e1);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    /* Status Messages */
-    .stAlert {
-        background: rgba(0, 0, 0, 0.6) !important;
-        backdrop-filter: blur(12px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 20px !important;
-    }
-    
-    /* Divider Styling */
-    hr {
-        margin: 2rem 0 !important;
-        border: none !important;
-        height: 1px !important;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
-    }
-    
-    /* Caption Styling */
-    .stCaption, caption {
-        color: #94a3b8 !important;
-        font-size: 0.85rem !important;
-    }
-    
-    /* Chat Message Styling */
-    [data-testid="stChatMessage"] {
-        background: rgba(30, 41, 59, 0.6) !important;
-        backdrop-filter: blur(12px) !important;
-        border-radius: 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        padding: 1rem !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    /* Hide Streamlit Branding */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: rgba(59, 130, 246, 0.5);
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background: rgba(59, 130, 246, 0.8);
-    }
-    
-    /* Metrics/Label Styling */
-    .stMetric {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border-radius: 20px !important;
-        padding: 1rem !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    /* Tabs Styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 1rem;
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 20px;
-        padding: 0.5rem;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 16px;
-        padding: 0.5rem 1.5rem;
-        transition: all 0.2s;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
-        color: white !important;
-    }
-    
-    /* Expander Styling */
-    .streamlit-expanderHeader {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border-radius: 16px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
 
-# 3. Stable Imports
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, [data-testid="stAppViewContainer"] {
+    font-family: 'DM Sans', sans-serif !important;
+    background-color: #080b10 !important;
+    color: #e2e8f2 !important;
+}
+
+/* ── Animated noise texture overlay ── */
+[data-testid="stAppViewContainer"]::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+}
+
+/* ── Grid background ── */
+[data-testid="stMain"] {
+    background-image:
+        linear-gradient(rgba(245,185,50,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,185,50,0.04) 1px, transparent 1px);
+    background-size: 44px 44px;
+}
+
+/* ── Sidebar ── */
+[data-testid="stSidebar"] {
+    background: #0d1117 !important;
+    border-right: 1px solid #1e2530 !important;
+}
+[data-testid="stSidebar"] * { color: #c8cfe0 !important; }
+[data-testid="stSidebarContent"] { padding: 1.5rem 1rem !important; }
+
+/* ── Main content padding ── */
+.main .block-container {
+    padding: 2rem 2.5rem 4rem !important;
+    max-width: 1200px !important;
+}
+
+/* ── Headings ── */
+h1 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 3.2rem !important;
+    letter-spacing: 3px !important;
+    color: #f5b932 !important;
+    line-height: 1 !important;
+    margin-bottom: 0.2rem !important;
+    text-shadow: 0 0 40px rgba(245,185,50,0.25) !important;
+}
+h2 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.6rem !important;
+    letter-spacing: 2px !important;
+    color: #e2e8f2 !important;
+}
+h3 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.2rem !important;
+    letter-spacing: 1.5px !important;
+    color: #94a3b8 !important;
+}
+
+/* ── Tabs ── */
+.stTabs [data-baseweb="tab-list"] {
+    background: #0d1117 !important;
+    border: 1px solid #1e2530 !important;
+    border-radius: 12px !important;
+    padding: 6px !important;
+    gap: 6px !important;
+}
+.stTabs [data-baseweb="tab"] {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1rem !important;
+    letter-spacing: 2px !important;
+    color: #64748b !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1.8rem !important;
+    transition: all 0.2s !important;
+    background: transparent !important;
+    border: none !important;
+}
+.stTabs [aria-selected="true"] {
+    background: #f5b932 !important;
+    color: #080b10 !important;
+}
+
+/* ── Inputs ── */
+.stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] {
+    background: #0d1117 !important;
+    border: 1px solid #1e2530 !important;
+    border-radius: 10px !important;
+    color: #e2e8f2 !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.95rem !important;
+    transition: border-color 0.2s !important;
+}
+.stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: #f5b932 !important;
+    box-shadow: 0 0 0 3px rgba(245,185,50,0.12) !important;
+}
+
+/* ── Primary Button ── */
+.stButton > button[kind="primary"], button[kind="primary"] {
+    background: #f5b932 !important;
+    color: #080b10 !important;
+    border: none !important;
+    border-radius: 40px !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 2px !important;
+    padding: 0.65rem 2rem !important;
+    transition: all 0.2s !important;
+    box-shadow: 0 4px 16px rgba(245,185,50,0.2) !important;
+}
+.stButton > button[kind="primary"]:hover {
+    background: #ffd060 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 8px 24px rgba(245,185,50,0.35) !important;
+}
+
+/* ── Secondary Button ── */
+.stButton > button {
+    background: #131920 !important;
+    color: #94a3b8 !important;
+    border: 1px solid #1e2530 !important;
+    border-radius: 8px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.85rem !important;
+    transition: all 0.2s !important;
+}
+.stButton > button:hover {
+    border-color: #f5b932 !important;
+    color: #f5b932 !important;
+}
+
+/* ── Metrics ── */
+[data-testid="stMetric"] {
+    background: #0d1117 !important;
+    border: 1px solid #1e2530 !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+}
+[data-testid="stMetricLabel"] { color: #64748b !important; font-size: 0.8rem !important; }
+[data-testid="stMetricValue"] { color: #f5b932 !important; font-family: 'Bebas Neue', sans-serif !important; font-size: 1.8rem !important; letter-spacing: 1px !important; }
+
+/* ── Status / Spinner ── */
+[data-testid="stStatusWidget"] {
+    background: #0d1117 !important;
+    border: 1px solid #1e2530 !important;
+    border-radius: 14px !important;
+}
+
+/* ── Alerts ── */
+.stAlert {
+    background: #0d1117 !important;
+    border: 1px solid #1e2530 !important;
+    border-radius: 12px !important;
+    color: #e2e8f2 !important;
+}
+
+/* ── Divider ── */
+hr {
+    border: none !important;
+    border-top: 1px solid #1e2530 !important;
+    margin: 1.5rem 0 !important;
+}
+
+/* ── Chat messages ── */
+[data-testid="stChatMessage"] {
+    background: #0d1117 !important;
+    border: 1px solid #1e2530 !important;
+    border-radius: 16px !important;
+}
+
+/* ── Expander ── */
+.streamlit-expanderHeader {
+    background: #0d1117 !important;
+    border: 1px solid #1e2530 !important;
+    border-radius: 10px !important;
+    color: #94a3b8 !important;
+    font-family: 'DM Sans', sans-serif !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0d1117; }
+::-webkit-scrollbar-thumb { background: #1e2530; border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: #f5b932; }
+
+/* ── Hide Streamlit branding ── */
+#MainMenu, footer, header { visibility: hidden; }
+
+/* ── Result card ── */
+.result-card {
+    background: linear-gradient(135deg, rgba(245,185,50,0.06), rgba(232,75,58,0.04));
+    border: 1px solid rgba(245,185,50,0.2);
+    border-radius: 16px;
+    padding: 1.8rem;
+    margin-top: 1rem;
+    line-height: 1.75;
+    color: #c8cfe0;
+    font-size: 0.95rem;
+}
+
+/* ── Saved item card ── */
+.saved-card {
+    background: #0d1117;
+    border: 1px solid #1e2530;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s;
+}
+.saved-card:hover { border-color: rgba(245,185,50,0.3); }
+
+/* ── Type pill ── */
+.type-pill {
+    display: inline-block;
+    background: rgba(245,185,50,0.12);
+    border: 1px solid rgba(245,185,50,0.3);
+    color: #f5b932;
+    border-radius: 20px;
+    padding: 2px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+/* ── Section label ── */
+.section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #475569;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1e2530;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ── Imports ──
 try:
     from crewai import Crew, Process
-    from agents import planner_agent, analyst_agent, reporter_agent
+    from agents import planner_agent, analyst_agent, reporter_agent, content_writer_agent
     from tasks import create_tasks
+    import vector_store as vs
 except Exception as e:
     st.error(f"Environment Error: {e}")
     st.stop()
 
-# --- THE CLEAN CALLBACK ---
+# ─────────────────────────────────────────────
+#  CALLBACK
+# ─────────────────────────────────────────────
 def streamlit_callback(step_output):
     raw_text = str(step_output)
     if "Failed to parse" in raw_text:
         return
-
     with st.chat_message("ai", avatar="🤖"):
         thought = re.search(r"thought=['\"](.*?)['\"]", raw_text, re.DOTALL)
-        output = re.search(r"output=['\"](.*?)['\"]", raw_text, re.DOTALL)
-        
+        output  = re.search(r"output=['\"](.*?)['\"]",  raw_text, re.DOTALL)
         if thought:
-            clean_thought = thought.group(1).replace('\\n', '\n').strip()
-            if clean_thought:
-                st.markdown(f"#### 🔍 Strategy\n{clean_thought}")
-
+            clean = thought.group(1).replace('\\n', '\n').strip()
+            if clean:
+                st.markdown(f"**🔍 Strategy**\n\n{clean}")
         if output:
-            clean_output = output.group(1).replace('\\n', '\n').strip()
-            if clean_output not in ["{}", "{", "None", ""]:
+            clean = output.group(1).replace('\\n', '\n').strip()
+            if clean not in ["{}", "{", "None", ""]:
                 st.markdown("---")
-                st.markdown(f"#### ✅ Findings\n{clean_output}")
+                st.markdown(f"**✅ Findings**\n\n{clean}")
 
-# --- MODERN UI CONTENT ---
-# Hero Section
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    st.markdown("""
-        <div style='text-align: center; padding: 1rem 0 2rem 0;'>
-            <span style='font-size: 4rem;'>🏏</span>
-            <h1 style='margin-top: 0.5rem;'>Sports Intelligence</h1>
-            <p style='color: #94a3b8; font-size: 1.1rem;'>Powered by DeepSeek-R1 • Real-time Analysis • Agentic Workflow</p>
-        </div>
-    """, unsafe_allow_html=True)
-
+# ─────────────────────────────────────────────
+#  SIDEBAR
+# ─────────────────────────────────────────────
 with st.sidebar:
-    # Modern Sidebar Header
     st.markdown("""
-        <div style='text-align: center; padding: 1rem 0 1.5rem 0;'>
-            <span style='font-size: 2rem;'>⚙️</span>
-            <h3 style='margin-top: 0.5rem;'>System Control</h3>
+        <div style='text-align:center; padding: 0.5rem 0 1.5rem;'>
+            <div style='font-size:2.8rem; margin-bottom:0.3rem;'>🏟️</div>
+            <div style='font-family:"Bebas Neue",sans-serif; font-size:1.5rem; letter-spacing:3px; color:#f5b932;'>SportsCraft AI</div>
+            <div style='font-size:0.75rem; color:#475569; margin-top:4px;'>GAI-10 · Group 10D5</div>
         </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # API Key Input with icon
-    st.markdown("#### 🔑 API Configuration")
-    serper_key = st.text_input("Serper API Key", value="HIDDEN", type="password", 
-                               help="Enter your Serper API key for web search capabilities")
+
+    st.markdown('<div class="section-label">⚙️ API CONFIG</div>', unsafe_allow_html=True)
+    serper_key = st.text_input("Serper API Key", value="HIDDEN", type="password",
+                               help="Required for real-time web search")
     os.environ["SERPER_API_KEY"] = serper_key
-    
+
     st.markdown("---")
-    
-    # System Stats in a modern card
-    st.markdown("#### 📊 System Status")
-    
+    st.markdown('<div class="section-label">📊 SYSTEM STATUS</div>', unsafe_allow_html=True)
+
     col_a, col_b = st.columns(2)
     with col_a:
-        st.metric("Active Agents", "3", delta=None)
+        st.metric("Agents", "4")
     with col_b:
-        st.metric("Model", "8B", delta=None)
-    
+        st.metric("Saved", str(vs.get_count()))
+
     st.markdown("---")
-    
-    # Feature list
-    st.markdown("#### ✨ Features")
+    st.markdown('<div class="section-label">🤖 ACTIVE AGENTS</div>', unsafe_allow_html=True)
     st.markdown("""
-        - 🧠 Multi-Agent Collaboration
-        - 🔍 Real-time Web Search
-        - 📈 Advanced Analytics
-        - 🤖 DeepSeek-R1 Powered
-        - 🎯 Strategic Insights
-    """)
-    
+<div style='font-size:0.82rem; line-height:2; color:#64748b;'>
+🔍 &nbsp;Lead Sports Planner<br>
+✅ &nbsp;Resource Validator<br>
+📝 &nbsp;Chief Sports Editor<br>
+✍️ &nbsp;<span style='color:#f5b932;'>Elite Content Writer</span> <span style='font-size:0.7rem; background:rgba(245,185,50,0.1); border:1px solid rgba(245,185,50,0.3); color:#f5b932; border-radius:4px; padding:1px 6px;'>NEW</span>
+</div>
+""", unsafe_allow_html=True)
+
     st.markdown("---")
-    st.caption("Built with CrewAI • Streamlit • DeepSeek")
-
-# Main Interaction Area
-with st.container():
-    # Modern Input Section
     st.markdown("""
-        <div style='margin-bottom: 1rem;'>
-            <h3>🎯 Analysis Request</h3>
-            <p style='color: #94a3b8;'>Describe what you want to analyze in detail</p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    col1, col2 = st.columns([4, 1])
-    with col1:
-        user_goal = st.text_input("", placeholder="e.g., Analyze India's batting performance in T20 World Cup 2024, focusing on strike rates and partnership patterns", 
-                                  label_visibility="collapsed")
-    with col2:
-        st.markdown("<div style='height: 0.25rem;'></div>", unsafe_allow_html=True)
-        execute = st.button("🚀 Analyze Now", use_container_width=True)
+<div style='font-size:0.75rem; color:#334155; text-align:center; line-height:1.8;'>
+CrewAI · Gemini 2.5 Flash<br>ChromaDB · Streamlit<br>Docker · AWS EC2
+</div>
+""", unsafe_allow_html=True)
 
-# --- EXECUTION ---
-if execute:
-    if not user_goal:
-        st.warning("Please enter a goal first.")
-    else:
-        planner_agent.step_callback = streamlit_callback
-        analyst_agent.step_callback = streamlit_callback
-        reporter_agent.step_callback = streamlit_callback
-
-        with st.status("🧠 Orchestrating Agents...", expanded=True) as status:
-            try:
-                now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                my_tasks = create_tasks(planner_agent, analyst_agent, reporter_agent)
-                
-                sports_crew = Crew(
-                    agents=[planner_agent, analyst_agent, reporter_agent],
-                    tasks=my_tasks,
-                    process=Process.sequential,
-                    verbose=True
-                )
-                
-                # Add a spinner for better UX
-                with st.spinner("Agents are analyzing your request..."):
-                    result = sports_crew.kickoff(inputs={'goal': user_goal, 'current_time': now})
-                
-                status.update(label="Analysis Complete! 🎉", state="complete")
-
-                st.divider()
-                
-                # Modern Results Section
-                st.markdown("""
-                    <div style='text-align: center; margin: 2rem 0 1rem 0;'>
-                        <span style='font-size: 2rem;'>📋</span>
-                        <h2>Executive Summary</h2>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                final_report = result.raw if hasattr(result, 'raw') else str(result)
-                
-                # Enhanced glass card for results
-                st.markdown(f"""
-                    <div style='
-                        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
-                        padding: 2rem;
-                        border-radius: 28px;
-                        border: 1px solid rgba(59, 130, 246, 0.3);
-                        backdrop-filter: blur(10px);
-                        margin: 1rem 0;
-                    '>
-                        <div style='
-                            font-family: "Inter", monospace;
-                            color: #f1f5f9;
-                            line-height: 1.6;
-                            font-size: 1rem;
-                        '>
-                            {final_report.strip('`')}
-                        </div>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                # Quick Actions
-                st.markdown("---")
-                col1, col2, col3 = st.columns(3)
-                with col2:
-                    if st.button("📤 Export Report", use_container_width=True):
-                        st.info("Export functionality coming soon!")
-                
-            except Exception as e:
-                st.error(f"Analysis Error: {e}")
-
-# Footer with gradient
+# ─────────────────────────────────────────────
+#  HEADER
+# ─────────────────────────────────────────────
 st.markdown("""
-    <div style='text-align: center; padding: 2rem 0 1rem 0;'>
-        <div style='height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); margin: 1rem 0;'></div>
-        <p style='color: #64748b; font-size: 0.85rem;'>Designed for Modern Analytics • DeepSeek-R1 • CrewAI Framework</p>
-    </div>
+<div style='padding: 0.5rem 0 1.5rem;'>
+    <h1>SportsCraft AI</h1>
+    <p style='color:#475569; font-size:0.95rem; margin:0; font-weight:300;'>
+        Intelligent Sports Analysis &amp; Content Generation &nbsp;·&nbsp; Powered by Gemini 2.5 Flash
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────
+#  TABS
+# ─────────────────────────────────────────────
+tab_analysis, tab_generator, tab_vault = st.tabs([
+    "⚡  SPORTS ANALYSIS",
+    "✍️  CONTENT GENERATOR",
+    "🗄️  CONTENT VAULT"
+])
+
+# ══════════════════════════════════════════════
+#  TAB 1 — SPORTS ANALYSIS (original feature)
+# ══════════════════════════════════════════════
+with tab_analysis:
+    st.markdown("### 🎯 Analysis Request")
+    st.markdown('<p style="color:#64748b; font-size:0.88rem; margin-top:-0.5rem;">Multi-agent AI research powered by real-time web search</p>', unsafe_allow_html=True)
+
+    col1, col2 = st.columns([5, 1])
+    with col1:
+        user_goal = st.text_input(
+            "goal_input", label_visibility="collapsed",
+            placeholder="e.g., Analyze India's batting performance in the 2024 T20 World Cup"
+        )
+    with col2:
+        execute = st.button("🚀 Analyze", type="primary", use_container_width=True)
+
+    if execute:
+        if not user_goal:
+            st.warning("Please enter a goal first.")
+        else:
+            planner_agent.step_callback  = streamlit_callback
+            analyst_agent.step_callback  = streamlit_callback
+            reporter_agent.step_callback = streamlit_callback
+
+            with st.status("🧠 Orchestrating Agents...", expanded=True) as status:
+                try:
+                    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    tasks = create_tasks(planner_agent, analyst_agent, reporter_agent)
+                    crew  = Crew(
+                        agents=[planner_agent, analyst_agent, reporter_agent],
+                        tasks=tasks,
+                        process=Process.sequential,
+                        verbose=True
+                    )
+                    with st.spinner("Agents are analysing your request..."):
+                        result = crew.kickoff(inputs={'goal': user_goal, 'current_time': now})
+                    status.update(label="✅ Analysis Complete!", state="complete")
+
+                    st.divider()
+                    st.markdown("### 📋 Executive Summary")
+                    final = result.raw if hasattr(result, 'raw') else str(result)
+                    st.markdown(f'<div class="result-card">{final}</div>', unsafe_allow_html=True)
+
+                    col_x, col_y, col_z = st.columns(3)
+                    with col_y:
+                        if st.button("📤 Export Report", use_container_width=True):
+                            st.info("Export coming soon!")
+                except Exception as e:
+                    st.error(f"Analysis Error: {e}")
+
+# ══════════════════════════════════════════════
+#  TAB 2 — CONTENT GENERATOR (GAI-10 feature)
+# ══════════════════════════════════════════════
+with tab_generator:
+    st.markdown("### ✍️ Sports Content Generator")
+    st.markdown('<p style="color:#64748b; font-size:0.88rem; margin-top:-0.5rem;">Transform topics into publication-ready sports content using advanced prompt engineering</p>', unsafe_allow_html=True)
+
+    # ── Controls ──
+    col_left, col_right = st.columns([1, 1], gap="large")
+
+    with col_left:
+        st.markdown('<div class="section-label">📌 CONTENT TYPE</div>', unsafe_allow_html=True)
+        content_type = st.selectbox(
+            "content_type", label_visibility="collapsed",
+            options=["Match Recap", "Player Profile", "Pre-Match Analysis", "Season Review"],
+            format_func=lambda x: {
+                "Match Recap": "⚽ Match Recap",
+                "Player Profile": "🏃 Player Profile",
+                "Pre-Match Analysis": "📊 Pre-Match Analysis",
+                "Season Review": "🏆 Season Review"
+            }[x]
+        )
+
+        st.markdown('<div class="section-label" style="margin-top:1rem;">🏅 SPORT</div>', unsafe_allow_html=True)
+        sport = st.selectbox(
+            "sport", label_visibility="collapsed",
+            options=["Cricket", "Football (Soccer)", "Basketball", "Tennis", "Hockey", "Rugby", "Kabaddi", "Baseball"]
+        )
+
+        st.markdown('<div class="section-label" style="margin-top:1rem;">🎙️ TONE</div>', unsafe_allow_html=True)
+        tone = st.selectbox(
+            "tone", label_visibility="collapsed",
+            options=["Dramatic", "Journalistic", "Analytical", "Casual"],
+            format_func=lambda x: {
+                "Dramatic": "⚡ Dramatic",
+                "Journalistic": "📰 Journalistic",
+                "Analytical": "📋 Analytical",
+                "Casual": "😄 Casual"
+            }[x]
+        )
+
+    with col_right:
+        st.markdown('<div class="section-label">🎯 TOPIC / MATCH</div>', unsafe_allow_html=True)
+        topic = st.text_input(
+            "topic", label_visibility="collapsed",
+            placeholder="e.g., India vs Australia — 3rd Test, Brisbane"
+        )
+
+        st.markdown('<div class="section-label" style="margin-top:1rem;">📝 KEY DETAILS / STATS</div>', unsafe_allow_html=True)
+        details = st.text_area(
+            "details", label_visibility="collapsed",
+            placeholder="e.g., India won by 6 wickets. Shubman Gill scored 91*, Bumrah took 5/72. Australia were bowled out for 212.",
+            height=120
+        )
+
+    st.markdown("---")
+    gen_col1, gen_col2, gen_col3 = st.columns([1, 2, 1])
+    with gen_col2:
+        generate = st.button("⚡ GENERATE CONTENT", type="primary", use_container_width=True)
+
+    # ── Generation ──
+    if generate:
+        if not topic.strip():
+            st.warning("Please enter a topic or match name.")
+        else:
+            content_writer_agent.step_callback = streamlit_callback
+            planner_agent.step_callback         = streamlit_callback
+            analyst_agent.step_callback         = streamlit_callback
+
+            with st.status(f"✍️ Writing {content_type}...", expanded=True) as gen_status:
+                try:
+                    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    full_topic = f"{topic}. Additional details: {details}" if details.strip() else topic
+
+                    tasks = create_tasks(
+                        planner_agent, analyst_agent, content_writer_agent,
+                        content_type=content_type,
+                        topic=full_topic,
+                        sport=sport,
+                        tone=tone
+                    )
+                    crew = Crew(
+                        agents=[planner_agent, analyst_agent, content_writer_agent],
+                        tasks=tasks,
+                        process=Process.sequential,
+                        verbose=True
+                    )
+                    with st.spinner("Agents are crafting your content..."):
+                        result = crew.kickoff(inputs={'current_time': now})
+                    gen_status.update(label="✅ Content Ready!", state="complete")
+
+                    final_content = result.raw if hasattr(result, 'raw') else str(result)
+
+                    # Store in session for save button
+                    st.session_state["last_generated"] = {
+                        "content_type": content_type,
+                        "topic": topic,
+                        "sport": sport,
+                        "tone": tone,
+                        "body": final_content
+                    }
+
+                    st.divider()
+
+                    # Header row
+                    head_col1, head_col2 = st.columns([3, 1])
+                    with head_col1:
+                        st.markdown(f"""
+<span class="type-pill">{content_type} · {sport} · {tone}</span>
+""", unsafe_allow_html=True)
+                        st.markdown(f"### {topic}")
+                    with head_col2:
+                        word_count = len(final_content.split())
+                        st.metric("Words", word_count)
+
+                    st.markdown(f'<div class="result-card">{final_content}</div>', unsafe_allow_html=True)
+
+                except Exception as e:
+                    st.error(f"Generation Error: {e}")
+
+    # ── Save to Vector DB ──
+    if "last_generated" in st.session_state:
+        st.markdown("---")
+        save_col1, save_col2, save_col3 = st.columns([1, 2, 1])
+        with save_col2:
+            if st.button("💾 Save to Content Vault", use_container_width=True):
+                data = st.session_state["last_generated"]
+                doc_id = vs.save_content(
+                    content_type=data["content_type"],
+                    topic=data["topic"],
+                    sport=data["sport"],
+                    tone=data["tone"],
+                    body=data["body"]
+                )
+                st.success(f"✅ Saved to Content Vault! ID: `{doc_id}`")
+                del st.session_state["last_generated"]
+                st.rerun()
+
+# ══════════════════════════════════════════════
+#  TAB 3 — CONTENT VAULT (Vector DB viewer)
+# ══════════════════════════════════════════════
+with tab_vault:
+    st.markdown("### 🗄️ Content Vault")
+    st.markdown('<p style="color:#64748b; font-size:0.88rem; margin-top:-0.5rem;">All generated content stored in ChromaDB · Semantic search enabled</p>', unsafe_allow_html=True)
+
+    # ── Search ──
+    search_col1, search_col2 = st.columns([5, 1])
+    with search_col1:
+        search_query = st.text_input(
+            "vault_search", label_visibility="collapsed",
+            placeholder="🔍 Search saved content semantically... e.g. 'India batting collapse'"
+        )
+    with search_col2:
+        do_search = st.button("Search", use_container_width=True)
+
+    st.markdown("---")
+
+    # ── Results ──
+    if do_search and search_query.strip():
+        results = vs.search_similar(search_query, n_results=5)
+        if results:
+            st.markdown(f"**{len(results)} result(s) for:** *{search_query}*")
+            for r in results:
+                m = r["meta"]
+                with st.expander(f"📄 {m.get('content_type','—')} · {m.get('topic','—')} · {m.get('created_at','—')}"):
+                    st.markdown(f'<span class="type-pill">{m.get("content_type")} · {m.get("sport")} · {m.get("tone")}</span>', unsafe_allow_html=True)
+                    st.markdown(r["body"])
+                    if st.button(f"🗑️ Delete", key=f"del_{r['id']}"):
+                        vs.delete_content(r["id"])
+                        st.rerun()
+        else:
+            st.info("No matching content found.")
+    else:
+        # ── Show all saved ──
+        saved = vs.get_all_saved()
+        total = vs.get_count()
+
+        v_col1, v_col2, v_col3 = st.columns(3)
+        with v_col1: st.metric("Total Saved", total)
+        with v_col2:
+            types = list(set(s["meta"].get("content_type","") for s in saved)) if saved else []
+            st.metric("Content Types", len(types))
+        with v_col3:
+            sports = list(set(s["meta"].get("sport","") for s in saved)) if saved else []
+            st.metric("Sports Covered", len(sports))
+
+        st.markdown("---")
+
+        if not saved:
+            st.markdown("""
+<div style='text-align:center; padding:3rem; color:#334155;'>
+    <div style='font-size:3rem; margin-bottom:1rem;'>🗄️</div>
+    <p style='font-size:1rem;'>No content saved yet.<br>Generate content and click <strong style='color:#f5b932;'>Save to Content Vault</strong>.</p>
+</div>
+""", unsafe_allow_html=True)
+        else:
+            for item in reversed(saved):
+                m = item["meta"]
+                with st.expander(f"📄  {m.get('content_type','—')}  ·  {m.get('topic','—')}  ·  {m.get('created_at','—')}"):
+                    st.markdown(f'<span class="type-pill">{m.get("content_type")} · {m.get("sport")} · {m.get("tone")}</span>', unsafe_allow_html=True)
+                    st.markdown(item["body"])
+                    if st.button(f"🗑️ Delete this entry", key=f"del_{item['id']}"):
+                        vs.delete_content(item["id"])
+                        st.rerun()
+
+# ── Footer ──
+st.markdown("""
+<div style='text-align:center; padding:2rem 0 1rem; border-top:1px solid #1e2530; margin-top:2rem;'>
+    <p style='color:#1e2530; font-size:0.8rem; font-family:"Bebas Neue",sans-serif; letter-spacing:2px;'>
+        SPORTSCRAFT AI · GAI-10 · GROUP 10D5 · MEDICAPS UNIVERSITY · DATAGAMI 2026
+    </p>
+</div>
 """, unsafe_allow_html=True)
