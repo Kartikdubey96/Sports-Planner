@@ -41,3 +41,5 @@ build/
 api-secrets.yaml
 *-secret.yaml
 *-secrets.yaml
+# ChromaDB local database (don't push the DB to GitHub)
+chroma_db/
