@@ -6,3 +6,4 @@ streamlit
 litellm
 python-dotenv
 crewai[google-genai]
+chromadb
