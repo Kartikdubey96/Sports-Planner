@@ -100,7 +100,7 @@ h3 {
     font-family: 'Bebas Neue', sans-serif !important;
     font-size: 1rem !important;
     letter-spacing: 2px !important;
-    color: #64748b !important;
+    color: #94a3b8 !important;
     border-radius: 8px !important;
     padding: 0.5rem 1.8rem !important;
     transition: all 0.2s !important;
@@ -260,7 +260,7 @@ hr {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 0.8rem;
     letter-spacing: 2px;
-    color: #475569;
+    color: #94a3b8;
     margin-bottom: 0.4rem;
     display: flex;
     align-items: center;
@@ -313,7 +313,7 @@ with st.sidebar:
         <div style='text-align:center; padding: 0.5rem 0 1.5rem;'>
             <div style='font-size:2.8rem; margin-bottom:0.3rem;'>🏟️</div>
             <div style='font-family:"Bebas Neue",sans-serif; font-size:1.5rem; letter-spacing:3px; color:#f5b932;'>SportsCraft AI</div>
-            <div style='font-size:0.75rem; color:#475569; margin-top:4px;'>GAI-10 · Group 10D5</div>
+            <div style='font-size:0.75rem; color:#94a3b8; margin-top:4px;'>GAI-10 · Group 10D5</div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -334,7 +334,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown('<div class="section-label">🤖 ACTIVE AGENTS</div>', unsafe_allow_html=True)
     st.markdown("""
-<div style='font-size:0.82rem; line-height:2; color:#64748b;'>
+<div style='font-size:0.82rem; line-height:2; color:#94a3b8;'>
 🔍 &nbsp;Lead Sports Planner<br>
 ✅ &nbsp;Resource Validator<br>
 📝 &nbsp;Chief Sports Editor<br>
@@ -355,7 +355,7 @@ CrewAI · Gemini 2.5 Flash<br>ChromaDB · Streamlit<br>Docker · AWS EC2
 st.markdown("""
 <div style='padding: 0.5rem 0 1.5rem;'>
     <h1>SportsCraft AI</h1>
-    <p style='color:#94a3b8; font-size:0.95rem; margin:0; font-weight:300;'>
+    <p style='color:#cbd5e1; font-size:0.95rem; margin:0; font-weight:500;'>
         Intelligent Sports Analysis &amp; Content Generation &nbsp;·&nbsp; Powered by Gemini 2.5 Flash
     </p>
 </div>
@@ -375,7 +375,7 @@ tab_analysis, tab_generator, tab_vault = st.tabs([
 # ══════════════════════════════════════════════
 with tab_analysis:
     st.markdown("### 🎯 Analysis Request")
-    st.markdown('<p style="color:#64748b; font-size:0.88rem; margin-top:-0.5rem;">Multi-agent AI research powered by real-time web search</p>', unsafe_allow_html=True)
+    st.markdown('<p style="color:#94a3b8; font-size:0.88rem; margin-top:-0.5rem;">Multi-agent AI research powered by real-time web search</p>', unsafe_allow_html=True)
 
     col1, col2 = st.columns([5, 1])
     with col1:
@@ -425,7 +425,7 @@ with tab_analysis:
 # ══════════════════════════════════════════════
 with tab_generator:
     st.markdown("### ✍️ Sports Content Generator")
-    st.markdown('<p style="color:#64748b; font-size:0.88rem; margin-top:-0.5rem;">Transform topics into publication-ready sports content using advanced prompt engineering</p>', unsafe_allow_html=True)
+    st.markdown('<p style="color:#94a3b8; font-size:0.88rem; margin-top:-0.5rem;">Transform topics into publication-ready sports content using advanced prompt engineering</p>', unsafe_allow_html=True)
 
     # ── Controls ──
     col_left, col_right = st.columns([1, 1], gap="large")
@@ -563,7 +563,7 @@ with tab_generator:
 # ══════════════════════════════════════════════
 with tab_vault:
     st.markdown("### 🗄️ Content Vault")
-    st.markdown('<p style="color:#64748b; font-size:0.88rem; margin-top:-0.5rem;">All generated content stored in ChromaDB · Semantic search enabled</p>', unsafe_allow_html=True)
+    st.markdown('<p style="color:#94a3b8; font-size:0.88rem; margin-top:-0.5rem;">All generated content stored in ChromaDB · Semantic search enabled</p>', unsafe_allow_html=True)
 
     # ── Search ──
     search_col1, search_col2 = st.columns([5, 1])
@@ -610,9 +610,9 @@ with tab_vault:
 
         if not saved:
             st.markdown("""
-<div style='text-align:center; padding:3rem; color:#334155;'>
+<div style='text-align:center; padding:3rem; color:#64748b;'>
     <div style='font-size:3rem; margin-bottom:1rem;'>🗄️</div>
-    <p style='font-size:1rem;'>No content saved yet.<br>Generate content and click <strong style='color:#f5b932;'>Save to Content Vault</strong>.</p>
+    <p style='font-size:1rem;'>No content saved yet.<br>Generate content and click <strong style='color:#cbd5e1;'>Save to Content Vault</strong>.</p>
 </div>
 """, unsafe_allow_html=True)
         else:
@@ -628,7 +628,7 @@ with tab_vault:
 # ── Footer ──
 st.markdown("""
 <div style='text-align:center; padding:2rem 0 1rem; border-top:1px solid #1e2530; margin-top:2rem;'>
-    <p style='color:#475569; font-size:0.8rem; font-family:"Bebas Neue",sans-serif; letter-spacing:2px;'>
+    <p style='color:#94a3b8; font-size:0.8rem; font-family:"Bebas Neue",sans-serif; letter-spacing:2px;'>
         SPORTSCRAFT AI · GAI-10 · GROUP 10D5 · MEDICAPS UNIVERSITY · DATAGAMI 2026
     </p>
 </div>
