@@ -372,6 +372,14 @@ hr {
     height: 1px;
     background: linear-gradient(90deg, #15181f, transparent);
 }
+            /* ── Remove tab underline indicator ── */
+.stTabs [data-baseweb="tab-highlight"] {
+    display: none !important;
+}
+            /* ── Remove tab bottom border line ── */
+.stTabs [data-baseweb="tab-border"] {
+    display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
