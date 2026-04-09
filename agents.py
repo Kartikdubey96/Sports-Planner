@@ -6,16 +6,16 @@ import os
 # ── Tools ──
 search_tool = SerperDevTool(search_kwargs={"num": 3})
 
-# ── LLM (Gemini 2.5 Flash) ──
+# ── LLM (Gemini 1.5 Flash - High Quota for Heavy Lifting) ──
 cloud_llm = LLM(
-    model="gemini/gemini-2.5-flash",
+    model="gemini/gemini-1.5-flash",
     temperature=0.1,
     api_key=os.environ.get("GEMINI_API_KEY")
 )
 
-# ── Content Generation LLM (slightly higher temp for creative writing) ──
+# ── Content Generation LLM (Gemini 1.5 Flash - High Quota for Testing) ──
 creative_llm = LLM(
-    model="gemini/gemini-2.5-flash",
+    model="gemini/gemini-1.5-flash",
     temperature=0.4,
     api_key=os.environ.get("GEMINI_API_KEY")
 )
@@ -41,7 +41,7 @@ planner_agent = Agent(
     tools=[search_tool],
     allow_delegation=False,
     verbose=True,
-    max_iter=5
+    max_iter=2
 )
 
 # ─────────────────────────────────────────────
@@ -63,7 +63,7 @@ analyst_agent = Agent(
     tools=[check_resource],
     allow_delegation=False,
     verbose=True,
-    max_iter=3
+    max_iter=2
 )
 
 # ─────────────────────────────────────────────
@@ -115,5 +115,5 @@ content_writer_agent = Agent(
     llm=creative_llm,
     allow_delegation=False,
     verbose=True,
-    max_iter=3
+    max_iter=2
 )
