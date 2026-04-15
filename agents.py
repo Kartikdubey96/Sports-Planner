@@ -6,14 +6,15 @@ import os
 # ── Tools ──
 search_tool = SerperDevTool(search_kwargs={"num": 1})
 
+# Using the active, upgraded Llama 3.3 model
 cloud_llm = LLM(
-    model="groq/llama3-70b-8192", 
+    model="groq/llama-3.3-70b-versatile",  # <--- Change this line
     temperature=0.1,
     api_key=os.environ.get("GROQ_API_KEY")
 )
 
 creative_llm = LLM(
-    model="groq/llama3-70b-8192", 
+    model="groq/llama-3.3-70b-versatile",  # <--- Change this line
     temperature=0.4,
     api_key=os.environ.get("GROQ_API_KEY")
 )
