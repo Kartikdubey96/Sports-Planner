@@ -4,20 +4,18 @@ from my_sports_tools import check_resource
 import os
 
 # ── Tools ──
-search_tool = SerperDevTool(search_kwargs={"num": 3})
+search_tool = SerperDevTool(search_kwargs={"num": 1})
 
-# ── LLM (Gemini 1.5 Flash - High Quota for Heavy Lifting) ──
 cloud_llm = LLM(
-    model="gemini/gemini-1.5-flash-latest",
+    model="groq/llama3-70b-8192", 
     temperature=0.1,
-    api_key=os.environ.get("GEMINI_API_KEY")
+    api_key=os.environ.get("GROQ_API_KEY")
 )
 
-# ── Content Generation LLM (Gemini 1.5 Flash - High Quota for Testing) ──
 creative_llm = LLM(
-    model="gemini/gemini-1.5-flash-latest",
+    model="groq/llama3-70b-8192", 
     temperature=0.4,
-    api_key=os.environ.get("GEMINI_API_KEY")
+    api_key=os.environ.get("GROQ_API_KEY")
 )
 
 # ─────────────────────────────────────────────
@@ -84,7 +82,8 @@ reporter_agent = Agent(
     4. Maintain consistent tone and formatting throughout.""",
     llm=cloud_llm,
     allow_delegation=False,
-    verbose=True
+    verbose=True,
+    max_iter=2
 )
 
 # ─────────────────────────────────────────────

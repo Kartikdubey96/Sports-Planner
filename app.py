@@ -644,7 +644,8 @@ with tab_generator:
                         agents=[planner_agent, analyst_agent, content_writer_agent],
                         tasks=tasks,
                         process=Process.sequential,
-                        verbose=True
+                        verbose=True,
+                        max_rpm=10
                     )
                     with st.spinner("Agents are crafting your content..."):
                         result = crew.kickoff(inputs={'current_time': now})
