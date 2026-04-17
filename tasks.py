@@ -175,23 +175,14 @@ TOPIC: {topic}
     else:
         # ── ORIGINAL: SPORTS ANALYSIS PIPELINE ──
         research_task = Task(
-            description="""
-ROLE: Lead Sports Analyst
-TASK: Research and plan sports analysis.
-
-1. Use the search tool to find the latest live score and match 
-   summary for {goal} on Cricbuzz or similar sites.
-2. Based on the real-time data found, break down the next steps 
-   for a full statistical analysis (including player form and key partnerships).
-
-RULES:
-- Only use verified data from search results
-- Do not hallucinate scores or player names
-- Current time: {current_time}
-""",
-            expected_output="A detailed report containing the current live score, match summary, and a 5-step technical plan for deep match analysis.",
-            agent=planner
-        )
+        description="""1. Review the match details and stats provided in this goal: {goal}.
+        2. If the user provided the scores and stats in the goal, DO NOT search the web. Use the provided stats directly to build your report.
+        3. Only use the search tool if no stats were provided.
+        4. Break down the next steps for a full statistical analysis.
+        Note: The current real-world time is {current_time}.""",
+        expected_output="""A detailed report containing the match summary (using provided stats), and a 5-step technical plan.""",
+        agent=planner
+    )
 
         validation_task = Task(
             description="""

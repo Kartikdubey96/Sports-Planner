@@ -55,7 +55,7 @@ analyst_agent = Agent(
     You finalize timelines and prepare data briefs for content generation.
 
     CRITICAL RULES:
-    1. Adhere strictly to the format required to use tools.
+    1. Adhere strictly to the format required to usearche toolsearch_tool.
     2. Do not loop or repeat the same tool call.
     3. Always assign a confidence score (Low/Medium/High) to each data point.""",
     llm=cloud_llm,

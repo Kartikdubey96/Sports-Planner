@@ -260,7 +260,7 @@ li[aria-selected="true"] {
 }
 [data-testid="stMetric"]:hover { border-color: var(--border-2) !important; }
 [data-testid="stMetricLabel"] {
-    color: var(--text-3) !important;
+    color: #999999 !important; /* Much more visible against black */
     font-family: 'Inter', sans-serif !important;
     font-size: 0.7rem !important;
     font-weight: 500 !important;
@@ -313,9 +313,9 @@ hr {
 .streamlit-expanderHeader {
     background: var(--glass) !important;
     backdrop-filter: var(--blur) !important;
-    border: 1px solid var(--border) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important; /* Brighter border */
     border-radius: var(--radius-sm) !important;
-    color: var(--text-2) !important;
+    color: #ffffff !important; /* Forced white for readability */
     font-family: 'Inter', sans-serif !important;
     font-size: 0.85rem !important;
     transition: border-color 0.2s !important;
@@ -386,7 +386,7 @@ hr {
     font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 1.5px;
-    color: var(--text-3);
+    color: #888888; /* Swapped to the lighter grey variable */
     text-transform: uppercase;
     margin-bottom: 0.45rem;
     display: flex;
@@ -449,10 +449,20 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
+    from dotenv import load_dotenv
+    load_dotenv() # This loads your real key from the .env file
+
     st.markdown('<div class="section-label">API Config</div>', unsafe_allow_html=True)
-    serper_key = st.text_input("Serper API Key", value="HIDDEN", type="password",
+    
+    # Grab the real key from the environment
+    real_key = os.environ.get("SERPER_API_KEY", "")
+    
+    serper_key = st.text_input("Serper API Key", value=real_key, type="password",
                                help="Required for real-time web search")
-    os.environ["SERPER_API_KEY"] = serper_key
+    
+    # Only update the environment if the box isn't empty
+    if serper_key:
+        os.environ["SERPER_API_KEY"] = serper_key
 
     st.markdown("---")
     st.markdown('<div class="section-label">System Status</div>', unsafe_allow_html=True)
@@ -701,7 +711,7 @@ with tab_vault:
 <div class='glass-card'>
     <div style='font-family:"Inter",sans-serif; font-size:0.88rem; font-weight:600;
                 color:#ffffff; margin-bottom:0.2rem;'>🗄️ Content Vault</div>
-    <div style='font-size:0.78rem; color:#555555; font-family:"Inter",sans-serif;'>
+    <div style='font-size:0.78rem; color:#aaaaaa; font-family:"Inter",sans-serif;'>
         All generated content stored in ChromaDB · Semantic search enabled
     </div>
 </div>
