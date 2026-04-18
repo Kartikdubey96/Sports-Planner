@@ -1,6 +1,6 @@
 from crewai import Agent, LLM
 from crewai_tools import SerperDevTool
-from my_sports_tools import check_resource
+from my_sports_tools import check_resource, fetch_live_cricket_stats
 import os
 
 # ── Tools ──
@@ -24,23 +24,19 @@ creative_llm = LLM(
 # ─────────────────────────────────────────────
 planner_agent = Agent(
     role='Lead Sports Planner',
-    goal='Research real-time sports data using web search and compile verified facts for analysis or content generation.',
-    backstory="""You are a world-class sports data researcher with 15 years of experience 
-    covering international cricket, football, and tennis for tier-1 publications. 
-    You are obsessive about accuracy — you never report a score or player stat without 
-    verifying it from a reputable source like Cricbuzz, ESPN, or BBC Sport.
-
-    CRITICAL RULES:
-    1. You ONLY have access to the Search tool.
-    2. DO NOT attempt to use the 'check_resource' tool.
-    3. Do not use conversational filler or <think> tags in your final output.
-    4. Always cite which source each data point came from.
-    5. Execute using the exact Thought/Action format provided to you.""",
-    llm=cloud_llm,
-    tools=[search_tool],
+    goal='Retrieve structured match data from the sports API or search the web for broad sports topics.',
+    backstory="""You are a world-class sports data strategist. You rely on clean API data for live match stats, but can also use web search for broader sports research.
+    
+    CRITICAL RULES: 
+    1. If asked for a specific live cricket match, prioritize the 'fetch_live_cricket_stats' tool.
+    2. If asked to research a broad topic or a different sport, use the Search tool.
+    3. DO NOT attempt to use the 'check_resource' tool.
+    4. Extract exact stats from your tools to avoid hallucination.""",
+    llm=cloud_llm, 
+    tools=[fetch_live_cricket_stats, search_tool], # <-- ADDED search_tool BACK HERE
     allow_delegation=False,
     verbose=True,
-    max_iter=2
+    max_iter=5
 )
 
 # ─────────────────────────────────────────────
@@ -55,7 +51,7 @@ analyst_agent = Agent(
     You finalize timelines and prepare data briefs for content generation.
 
     CRITICAL RULES:
-    1. Adhere strictly to the format required to usearche toolsearch_tool.
+    1. Adhere strictly to the format required to use the 'check_resource' tool.
     2. Do not loop or repeat the same tool call.
     3. Always assign a confidence score (Low/Medium/High) to each data point.""",
     llm=cloud_llm,

@@ -175,14 +175,13 @@ TOPIC: {topic}
     else:
         # ── ORIGINAL: SPORTS ANALYSIS PIPELINE ──
         research_task = Task(
-        description="""1. Review the match details and stats provided in this goal: {goal}.
-        2. If the user provided the scores and stats in the goal, DO NOT search the web. Use the provided stats directly to build your report.
-        3. Only use the search tool if no stats were provided.
-        4. Break down the next steps for a full statistical analysis.
+            description="""1. Use the 'fetch_live_cricket_stats' tool to retrieve the JSON data for: {goal}.
+        2. Parse the JSON to find the exact scores, runs, and balls faced for the top batsmen.
+        3. Break down the next steps for a full statistical analysis.
         Note: The current real-world time is {current_time}.""",
-        expected_output="""A detailed report containing the match summary (using provided stats), and a 5-step technical plan.""",
-        agent=planner
-    )
+            expected_output="""A detailed report containing the verified API scores, top batsmen stats, and a 5-step technical plan.""",
+            agent=planner
+        )
 
         validation_task = Task(
             description="""
