@@ -34,9 +34,30 @@ def fetch_live_cricket_stats(match_query: str) -> str:
             response = requests.get(url, headers=headers, timeout=10)
             
             if response.status_code == 200:
-                # Return just a slice of the JSON to save LLM tokens
-                return json.dumps(response.json()[:3]) 
+                data = response.json()
+                match_list = data.get('typeMatches', [])
+                
+                extracted_data = []
+                for m_type in match_list[:2]:
+                    for series in m_type.get('seriesMatches', [])[:2]:
+                        for match in series.get('seriesAdWrapper', {}).get('matches', [])[:2]:
+                            info = match.get('matchInfo', {})
+                            score = match.get('matchScore', {})
+                            
+                            # Build a high-density string for each match
+                            match_summary = {
+                                "teams": f"{info.get('team1', {}).get('teamName')} vs {info.get('team2', {}).get('teamName')}",
+                                "status": info.get('status'),
+                                "format": info.get('matchFormat'),
+                                "scores": score
+                            }
+                            extracted_data.append(match_summary)
+                
+                # Return as a string—this will be ~80% smaller than the raw JSON
+                return json.dumps(extracted_data)
+                    
         except Exception as e:
+            # This will now only trigger for real connection issues, not the slice error
             print(f"API Error: {e}. Falling back to cached data.")
 
     # 2. Fallback JSON Data: Guarantees the agents have clean, token-friendly data 

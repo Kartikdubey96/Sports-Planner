@@ -4,7 +4,7 @@ from my_sports_tools import check_resource, fetch_live_cricket_stats
 import os
 
 # ── Tools ──
-search_tool = SerperDevTool(search_kwargs={"num": 1})
+search_tool = SerperDevTool(n_results=1)
 
 # Using the active, upgraded Llama 3.3 model
 cloud_llm = LLM(
@@ -36,7 +36,8 @@ planner_agent = Agent(
     tools=[fetch_live_cricket_stats, search_tool], # <-- ADDED search_tool BACK HERE
     allow_delegation=False,
     verbose=True,
-    max_iter=5
+    max_iter=3,
+    max_rpm=10
 )
 
 # ─────────────────────────────────────────────
@@ -58,7 +59,8 @@ analyst_agent = Agent(
     tools=[check_resource],
     allow_delegation=False,
     verbose=True,
-    max_iter=2
+    max_iter=2,
+    max_rpm=10
 )
 
 # ─────────────────────────────────────────────
@@ -80,7 +82,8 @@ reporter_agent = Agent(
     llm=cloud_llm,
     allow_delegation=False,
     verbose=True,
-    max_iter=2
+    max_iter=2,
+    max_rpm=10
 )
 
 # ─────────────────────────────────────────────
@@ -111,5 +114,6 @@ content_writer_agent = Agent(
     llm=creative_llm,
     allow_delegation=False,
     verbose=True,
-    max_iter=2
+    max_iter=2,
+    max_rpm=10
 )

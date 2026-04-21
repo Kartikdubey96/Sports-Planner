@@ -359,7 +359,7 @@ hr {
     padding: 1.8rem;
     margin-top: 1rem;
     line-height: 1.8;
-    color: var(--text-2);
+    color: var(--text-1);
     font-size: 0.88rem;
     font-family: 'Inter', sans-serif;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
@@ -440,7 +440,7 @@ with st.sidebar:
         <div style='padding: 0.5rem 0 2rem;'>
             <div style='font-family:"Inter",sans-serif; font-size:0.95rem; font-weight:700;
                         color:#ffffff; letter-spacing:-0.3px;'>
-                🏟️ SportsCraft AI
+                 SportsCraft AI
             </div>
             <div style='font-size:0.7rem; color:#444444; margin-top:4px;
                         letter-spacing:0.5px; font-weight:500;'>
@@ -478,10 +478,10 @@ with st.sidebar:
     st.markdown("""
 <div style='font-size:0.78rem; line-height:2.4; color:#444444;
             font-family:"Inter",sans-serif; font-weight:400;'>
-    🔍 &nbsp;Lead Sports Planner<br>
-    ✅ &nbsp;Resource Validator<br>
-    📝 &nbsp;Chief Sports Editor<br>
-    ✍️ &nbsp;<span style='color:#888888;'>Elite Content Writer</span>
+     &nbsp;Lead Sports Planner<br>
+     &nbsp;Resource Validator<br>
+     &nbsp;Chief Sports Editor<br>
+     &nbsp;<span style='color:#888888;'>Elite Content Writer</span>
     <span style='font-size:0.62rem; background:rgba(255,255,255,0.06);
     border:1px solid rgba(255,255,255,0.14); color:#888888;
     border-radius:4px; padding:1px 6px; margin-left:4px;'>NEW</span>
@@ -515,9 +515,9 @@ st.markdown("""
 #  TABS
 # ─────────────────────────────────────────────
 tab_analysis, tab_generator, tab_vault = st.tabs([
-    "⚡ Sports Analysis",
-    "✍️ Content Generator",
-    "🗄️ Content Vault"
+    " Sports Analysis",
+    " Content Generator",
+    " Content Vault"
 ])
 
 # ══════════════════════════════════════════════
@@ -560,6 +560,8 @@ with tab_analysis:
                         agents=[planner_agent, analyst_agent, reporter_agent],
                         tasks=tasks,
                         process=Process.sequential,
+                        memory=False,  
+                        max_rpm=10,    
                         verbose=True
                     )
                     with st.spinner("Agents are analysing your request..."):
@@ -569,7 +571,7 @@ with tab_analysis:
                     st.divider()
                     st.markdown("### 📋 Executive Summary")
                     final = result.raw if hasattr(result, 'raw') else str(result)
-                    st.markdown(f'<div class="result-card">{final}</div>', unsafe_allow_html=True)
+                    st.markdown(final)
 
                     col_x, col_y, col_z = st.columns(3)
                     with col_y:
@@ -586,7 +588,7 @@ with tab_generator:
     st.markdown("""
 <div class='glass-card'>
     <div style='font-family:"Inter",sans-serif; font-size:0.88rem; font-weight:600;
-                color:#ffffff; margin-bottom:0.2rem;'>✍️ Sports Content Generator</div>
+                color:#ffffff; margin-bottom:0.2rem;'> Sports Content Generator</div>
     <div style='font-size:0.78rem; color:#555555; font-family:"Inter",sans-serif;'>
         Transform topics into publication-ready sports content using advanced prompt engineering
     </div>
@@ -628,7 +630,7 @@ with tab_generator:
     st.markdown("---")
     gen_col1, gen_col2, gen_col3 = st.columns([1, 2, 1])
     with gen_col2:
-        generate = st.button("⚡ Generate Content", type="primary", use_container_width=True)
+        generate = st.button(" Generate Content", type="primary", use_container_width=True)
 
     if generate:
         if not topic.strip():
@@ -655,7 +657,8 @@ with tab_generator:
                         tasks=tasks,
                         process=Process.sequential,
                         verbose=True,
-                        max_rpm=10
+                        memory=False,   
+                        max_rpm=10,    
                     )
                     with st.spinner("Agents are crafting your content..."):
                         result = crew.kickoff(inputs={'current_time': now})
@@ -680,7 +683,7 @@ with tab_generator:
                     with head_col2:
                         st.metric("Words", len(final_content.split()))
 
-                    st.markdown(f'<div class="result-card">{final_content}</div>', unsafe_allow_html=True)
+                    st.markdown(final_content)
 
                 except Exception as e:
                     st.error(f"Generation Error: {e}")
@@ -689,7 +692,7 @@ with tab_generator:
         st.markdown("---")
         save_col1, save_col2, save_col3 = st.columns([1, 2, 1])
         with save_col2:
-            if st.button("💾 Save to Content Vault", use_container_width=True):
+            if st.button(" Save to Content Vault", use_container_width=True):
                 data = st.session_state["last_generated"]
                 doc_id = vs.save_content(
                     content_type=data["content_type"],
