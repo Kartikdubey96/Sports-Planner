@@ -1,25 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sports-analyst-deployment
+  name: sports-content-gen
   labels:
-    app: sports-analyst
+    app: sports-content-gen
 spec:
-  replicas: 2 # This runs 2 copies of your app for backup!
+  replicas: 1 # Standard for EC2 t2.medium to manage RAM usage
   selector:
     matchLabels:
-      app: sports-analyst
+      app: sports-content-gen
   template:
     metadata:
       labels:
-        app: sports-analyst
+        app: sports-content-gen
     spec:
       containers:
-      - name: sports-analyst-container
-        # REPALCE THIS with your actual Docker image name
-        image: your-dockerhub-username/sports-analyst:latest 
+      - name: sports-container
+        image: your-repo/sports-planner:latest # REPALCE with your Docker Hub image
         ports:
         - containerPort: 8501
         envFrom:
         - secretRef:
-            name: sports-app-secrets # Pulls the API keys from Step 1
+            name: sports-app-secrets # Pulls GROQ_API_KEY & SERPER_API_KEY
+        volumeMounts:
+        - name: vault-storage
+          mountPath: /app/sports_vault_db # Path inside the container
+      volumes:
+      - name: vault-storage
+        hostPath:
+          path: /home/ec2-user/sports_vault_db # Persistent path on your EC2

@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sports-analyst-service
+  name: sports-content-gen-service
 spec:
-  type: LoadBalancer # Asks the cloud provider for a public IP
+  type: LoadBalancer # AWS will provision an ELB if using EKS
   selector:
-    app: sports-analyst # Connects this service to your deployment
+    app: sports-content-gen # Must match the deployment label exactly
   ports:
-    - protocol: TCP
-      port: 80        # The port users will hit on the internet
-      targetPort: 8501 # The internal Streamlit port K8s routes traffic to
+  - protocol: TCP
+    port: 80        # The public internet port
+    targetPort: 8501 # The internal app port
