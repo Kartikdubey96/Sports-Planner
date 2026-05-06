@@ -1,23 +1,34 @@
-# Use a slim, official Python 3.11 base image
+# 1. Use the official slim image
 FROM python:3.11-slim
 
-# Set the working directory
+# 2. Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on
+
+# 3. Create a non-privileged user for security
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# 4. Set working directory
 WORKDIR /app
 
-# Copy ONLY the requirements file first to leverage Docker cache
+# 5. Install dependencies
 COPY requirements.txt .
-
-# Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Ensure Python doesn't buffer logs (critical for viewing real-time logs in AWS/Cloud)
-ENV PYTHONUNBUFFERED=1
+# 6. Copy application code and change ownership to the new user
+COPY --chown=appuser:appuser . .
 
-# Copy the rest of your application code
-COPY . .
+# 7. Switch to the non-root user
+USER appuser
 
-# Expose Streamlit's default port
+# 8. Expose port
 EXPOSE 8501
 
-# Run Streamlit in Headless mode so it doesn't freeze asking for an email!
+# 9. Add a Healthcheck (checks if the Streamlit port is responding)
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD curl -f http://localhost:8501/_stcore/health || exit 1
+
+# 10. Start Streamlit
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
