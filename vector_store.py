@@ -4,8 +4,17 @@ import os
 import hashlib
 from datetime import datetime
 
-# Initialize ChromaDB (persistent local storage)
-CHROMA_PATH = os.path.join(os.path.dirname(__file__), "chroma_db")
+import os
+
+# Check if we are running inside Docker
+IS_DOCKER = os.path.exists('/.dockerenv')
+
+if IS_DOCKER:
+    # Use the absolute path mapped in your Docker volume for AWS
+    CHROMA_PATH = "/app/sports_vault_db"
+else:
+    # Use the local folder on your Lenovo laptop for development
+    CHROMA_PATH = os.path.join(os.path.dirname(__file__), "chroma_db")
 
 def get_client():
     return chromadb.PersistentClient(path=CHROMA_PATH)
