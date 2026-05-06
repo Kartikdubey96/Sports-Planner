@@ -1,34 +1,26 @@
-# 1. Use the official slim image
 FROM python:3.11-slim
 
-# 2. Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on
+# ... (Previous ENV vars)
+ENV PYTHONUNBUFFERED=1
 
-# 3. Create a non-privileged user for security
-RUN groupadd -r appuser && useradd -r -g appuser appuser
+# 1. Create the user AND their home directory specifically
+RUN groupadd -r appuser && useradd -r -g appuser -m -d /home/appuser appuser
 
-# 4. Set working directory
 WORKDIR /app
 
-# 5. Install dependencies
+# 2. Install dependencies as root (standard)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 6. Copy application code and change ownership to the new user
+# 3. Copy code and ensure appuser owns the /app directory
 COPY --chown=appuser:appuser . .
 
-# 7. Switch to the non-root user
+# 4. Set an environment variable so Streamlit knows where to write config
+ENV STREAMLIT_CONFIG_DIR=/home/appuser/.streamlit
+
+# 5. Switch to the user
 USER appuser
 
-# 8. Expose port
 EXPOSE 8501
 
-# 9. Add a Healthcheck (checks if the Streamlit port is responding)
-HEALTHCHECK --interval=30s --timeout=3s \
-  CMD curl -f http://localhost:8501/_stcore/health || exit 1
-
-# 10. Start Streamlit
 CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
